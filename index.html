@@ -14,6 +14,30 @@
 </div>
 <div class="warm-bar"><div class="container"><span class="warm-text" id="warmText">🧡 每一份帮助都弥足珍贵</span></div></div>
 </header>
+<!-- 欢迎登记弹窗 -->
+<div class="modal-overlay" id="welcomeModal" style="display:flex;background:rgba(61,44,30,0.6);"><div class="modal-content" style="max-width:480px;"><div class="modal-body" style="text-align:center;padding:30px 24px;">
+<div style="font-size:3.5rem;margin-bottom:12px;">🧡</div>
+<h2 style="font-size:1.3rem;color:var(--text);margin-bottom:8px;">欢迎来到守望相助</h2>
+<p style="font-size:.88rem;color:var(--text-light);line-height:1.8;margin-bottom:16px;">这是一个物资信息共享平台。为了确保信息真实可追溯，也方便您后续修改和管理自己的发布，我们诚挚地邀请您在开始使用前先进行身份登记。</p>
+<div style="background:var(--primary-light);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;text-align:left;">
+<p style="font-size:.82rem;color:var(--text);margin-bottom:4px;"><strong>📝 登记后您可以：</strong></p>
+<p style="font-size:.82rem;color:var(--text-light);margin-bottom:3px;">✅ 发布求助和捐赠信息</p>
+<p style="font-size:.82rem;color:var(--text-light);margin-bottom:3px;">✅ 随时查看、修改或删除您发布的信息</p>
+<p style="font-size:.82rem;color:var(--text-light);margin-bottom:3px;">✅ 系统自动匹配供需双方，第一时间获得帮助</p>
+<p style="font-size:.82rem;color:var(--text-light);">✅ 所有信息在手机和电脑上同步，随时管理</p>
+</div>
+<div style="text-align:left;margin-bottom:16px;"><p style="font-size:.82rem;color:var(--text-light);margin-bottom:4px;"><strong>🙏 登记信息仅用于身份验证</strong></p><p style="font-size:.78rem;color:var(--text-muted);">姓名和手机号只对您自己可见，电话仅展示在看板上供对接联系。您的隐私安全是我们最重视的事。</p></div>
+<div class="form-group"><label style="text-align:left;font-size:.85rem;">您的称呼</label><input type="text" id="welcomeName" placeholder="如：黄先生 / 张大为" maxlength="20"></div>
+<div class="form-row"><div class="form-group"><label style="font-size:.85rem;">手机号码</label><input type="tel" id="welcomePhone" placeholder="11位手机号" maxlength="11"></div><div class="form-group"><label style="font-size:.85rem;">身份证后6位</label><input type="text" id="welcomeIdCard" placeholder="后6位" maxlength="6"></div></div>
+<button class="btn btn-submit" onclick="app.welcomeRegister()" style="width:100%;margin-top:8px;padding:12px;font-size:1rem;">✅ 开始使用</button>
+<div style="background:var(--warning-light);border-radius:var(--radius-sm);padding:10px;margin-top:12px;text-align:left;">
+<p style="font-size:.78rem;color:var(--warning);font-weight:600;margin-bottom:2px;">📸 重要提醒</p>
+<p style="font-size:.75rem;color:var(--text-light);">登记成功后，系统会显示您的个人ID。请务必<strong>截图保存</strong>，这是您登录和管理发布的唯一凭证。如丢失，可通过「找回ID」功能验证找回。</p>
+</div>
+<p style="font-size:.72rem;color:var(--text-muted);margin-top:10px;">点击即表示您同意 <a href="guide.html#legal" style="color:var(--primary);">法律声明</a></p>
+<div id="welcomeError" style="color:var(--primary);font-size:.8rem;margin-top:8px;display:none;"></div>
+<p style="margin-top:14px;"><a href="#" onclick="app.skipWelcome();return false;" style="font-size:.82rem;color:var(--text-muted);text-decoration:none;">🙋 我已经登记过，跳过 →</a></p>
+</div></div></div></div>
 <div class="stats-bar"><div class="container stats-inner">
 <div class="stat-item"><span class="stat-num" id="statRequests">0</span><span class="stat-lbl">求助</span></div>
 <div class="stat-item"><span class="stat-num" id="statOffers">0</span><span class="stat-lbl">捐赠</span></div>
@@ -32,6 +56,7 @@
 <select id="filterMatch" onchange="app.filter()"><option value="all">🔗 匹配</option><option value="matched">✅ 已匹配</option><option value="unmatched">⚠️ 未匹配</option></select>
 <button class="btn btn-export" onclick="app.exportExcel()">📥 导出</button>
 <button class="btn btn-my" onclick="app.openMyCenter()">📋 我的</button>
+<a href="guide.html" class="btn btn-guide" style="display:inline-flex;align-items:center;gap:4px;padding:7px 14px;border:1.5px solid var(--primary);border-radius:var(--radius-sm);font-size:.82rem;font-weight:600;background:transparent;color:var(--primary);text-decoration:none;white-space:nowrap;">📖 指南</a>
 </div></div></div></section>
 <section class="dashboard-panel" id="dashboardPanel"><div class="container"><div class="dash-grid">
 <div class="dash-card"><h4>🆘 需求板</h4><div class="dash-table-scroll"><table id="requestBoard"><thead><tr><th>县/区</th><th>求助</th><th>捐赠</th><th>缺口</th></tr></thead><tbody id="requestBoardBody"></tbody></table></div></div>
