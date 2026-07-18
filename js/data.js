@@ -13,10 +13,10 @@ const DataStore = {
       const items = await SB.select('items', { order: 'created_at.desc' });
       this.items = items.map(item => this._formatItem(item));
       this._allItemsLoaded = true;
-      // 计算下一个编号
+      // 计算下一个编号（兼容 #001 和 A001/B001 两种格式）
       if (this.items.length > 0) {
         const maxSerial = Math.max(...this.items.map(i => {
-          const num = parseInt(i.serial.replace('#', ''));
+          const num = parseInt(i.serial.replace(/^[A-B]#?/, ''));
           return isNaN(num) ? 0 : num;
         }));
         this._nextSerial = maxSerial + 1;
@@ -60,10 +60,11 @@ const DataStore = {
     return JSON.stringify(arr || []);
   },
 
-  /** 生成编号 */
-  _genSerial() {
+  /** 生成编号：求助 A001, A002... 捐赠 B001, B002... */
+  _genSerial(type) {
     const n = this._nextSerial++;
-    return '#' + String(n).padStart(3, '0');
+    const prefix = type === 'request' ? 'A' : 'B';
+    return prefix + String(n).padStart(3, '0');
   },
 
   /** 获取全部 */
@@ -74,7 +75,7 @@ const DataStore = {
 
   /** 添加一条（云端） */
   async add(item) {
-    item.serial = this._genSerial();
+    item.serial = this._genSerial(item.type);
     const record = {
       personal_id: item.personal_id || '',
       serial: item.serial,
