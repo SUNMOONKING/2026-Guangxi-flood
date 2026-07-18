@@ -11,7 +11,7 @@ const DataStore = {
   async init() {
     try {
       const items = await SB.select('items', { order: 'created_at.desc' });
-      this.items = items.map(this._formatItem);
+      this.items = items.map(item => this._formatItem(item));
       this._allItemsLoaded = true;
       // 计算下一个编号
       if (this.items.length > 0) {
