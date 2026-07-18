@@ -85,7 +85,8 @@ const app = {
     document.getElementById('publishModal').dataset.type = type;
     const sel = document.getElementById('formProvince');
     sel.innerHTML = '<option value="">请选省</option>';
-    const provinces = type === 'request' ? GX_PROVINCE : PROVINCES;
+    // 全国所有省份
+    const provinces = PROVINCES;
     provinces.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; if (p === '广西壮族自治区') o.selected = true; sel.appendChild(o); });
     this.onProvinceChange();
     document.getElementById('publishModal').classList.add('show');
@@ -448,7 +449,7 @@ const app = {
     const req = items.filter(i => i.type === 'request').length;
     const off = items.filter(i => i.type === 'offer').length;
     const matched = items.filter(i => i.matchCount > 0).length;
-    ta.value = `🤝 守望相助 · 洪灾供需对接平台\n\n这是一个物资信息共享平台，求助方（限广西）和捐赠方（全国）可自行发布物资供需信息，系统自动匹配供需双方，帮助受灾地区尽快获得所需物资。\n\n📊 当前已有 ${req} 条求助、${off} 条捐赠、${matched} 对已匹配\n\n🔗 ${siteUrl}\n\n请转发给需要的人，一起打破信息差 🙏`;
+    ta.value = `🤝 守望相助 · 灾害供需对接平台\n\n这是一个物资信息共享平台，受灾地区（全国）和捐赠方（全国）均可自行发布物资供需信息，系统自动匹配供需双方，帮助受灾地区尽快获得所需物资。\n\n📊 当前已有 ${req} 条求助、${off} 条捐赠、${matched} 对已匹配\n\n🔗 ${siteUrl}\n\n请转发给需要的人，一起打破信息差 🙏`;
   },
   copyShare() { const ta = document.getElementById('shareText'); ta.select(); navigator.clipboard.writeText(ta.value).then(() => this._toast('📋 已复制')).catch(() => {}); },
 
