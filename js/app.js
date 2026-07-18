@@ -28,6 +28,10 @@ const app = {
     this.updateShare();
     this.startWarmRotation();
     setTimeout(() => StatsBoard.init(), 500);
+    // 检查是否已登记，第一次访问显示欢迎弹窗
+    if (!localStorage.getItem('hf_registered')) {
+      document.getElementById('welcomeModal').style.display = 'flex';
+    }
     setInterval(async () => {
       await DataStore.init();
       MatchEngine.matchAll();
@@ -374,6 +378,44 @@ const app = {
       this.showLoggedIn();
     } catch(e) {
       this._toast('查询失败，请重试');
+    }
+  },
+
+  /** 跳过欢迎登记 */
+  skipWelcome() {
+    localStorage.setItem('hf_registered', 'true');
+    document.getElementById('welcomeModal').style.display = 'none';
+    document.body.style.overflow = '';
+  },
+
+  /** 欢迎弹窗 - 首次登记 */
+  async welcomeRegister() {
+    const name = document.getElementById('welcomeName').value.trim();
+    const phone = document.getElementById('welcomePhone').value.trim();
+    const idCard = document.getElementById('welcomeIdCard').value.trim();
+    const err = document.getElementById('welcomeError');
+    if (!name) { err.textContent = '请填写您的称呼'; err.style.display = 'block'; return; }
+    if (!phone || phone.length !== 11) { err.textContent = '请输入11位手机号'; err.style.display = 'block'; return; }
+    if (!idCard || idCard.length !== 6) { err.textContent = '请输入身份证后6位'; err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    try {
+      const result = await IdentityStore.register(name, phone, idCard);
+      this.currentIdentity = result;
+      localStorage.setItem('hf_registered', 'true');
+      alert(`🧡 欢迎您，${result.realName}！\n\n您的个人ID：${result.personalId}\n请截图保存此信息，后续可通过「📋 我的」→ 输入个人ID管理您的发布。\n\n现在您可以自由使用平台了！`);
+      document.getElementById('welcomeModal').style.display = 'none';
+      document.body.style.overflow = '';
+    } catch(e) {
+      // 如果手机号已注册，说明是老用户，直接放行
+      if (e.message.includes('已注册')) {
+        localStorage.setItem('hf_registered', 'true');
+        alert(`👋 欢迎回来！\n\n您已经注册过了，现在可以自由使用平台。\n如需管理您的发布，请点击「📋 我的」→ 输入个人ID登录。`);
+        document.getElementById('welcomeModal').style.display = 'none';
+        document.body.style.overflow = '';
+      } else {
+        err.textContent = e.message;
+        err.style.display = 'block';
+      }
     }
   },
 
