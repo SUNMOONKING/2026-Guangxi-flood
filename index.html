@@ -15,9 +15,7 @@
 <div class="warm-bar"><div class="container"><span class="warm-text" id="warmText">🧡 每一份帮助都弥足珍贵</span></div></div>
 </header>
 <!-- 欢迎登记弹窗 -->
-<div class="modal-overlay" id="welcomeModal" style="display:flex;background:rgba(61,44,30,0.6);"><div class="modal-content" style="max-width:480px;"><div class="modal-body" style="text-align:center;padding:30px 24px;">
-<div style="font-size:3.5rem;margin-bottom:12px;">🧡</div>
-<h2 style="font-size:1.3rem;color:var(--text);margin-bottom:8px;">欢迎来到守望相助</h2>
+<div class="modal-overlay" id="welcomeModal" style="display:flex;background:rgba(61,44,30,0.6);"><div class="modal-content" style="max-width:480px;"><div class="modal-header" style="position:relative;align-items:flex-start;"><h3 style="flex:1;font-size:1.05rem;line-height:1.4;">🧡 欢迎来到守望相助</h3><button onclick="app.skipWelcome()" style="background:var(--primary);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;margin-left:8px;">🙋 跳过</button></div><div class="modal-body" style="text-align:center;padding:16px 24px 24px;">
 <p style="font-size:.88rem;color:var(--text-light);line-height:1.8;margin-bottom:16px;">这是一个物资信息共享平台。为了确保信息真实可追溯，也方便您后续修改和管理自己的发布，我们诚挚地邀请您在开始使用前先进行身份登记。</p>
 <div style="background:var(--primary-light);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;text-align:left;">
 <p style="font-size:.82rem;color:var(--text);margin-bottom:4px;"><strong>📝 登记后您可以：</strong></p>
@@ -36,7 +34,6 @@
 </div>
 <p style="font-size:.72rem;color:var(--text-muted);margin-top:10px;">点击即表示您同意 <a href="guide.html#legal" style="color:var(--primary);">法律声明</a></p>
 <div id="welcomeError" style="color:var(--primary);font-size:.8rem;margin-top:8px;display:none;"></div>
-<p style="margin-top:14px;"><a href="#" onclick="app.skipWelcome();return false;" style="font-size:.82rem;color:var(--text-muted);text-decoration:none;">🙋 我已经登记过，跳过 →</a></p>
 </div></div></div></div>
 <div class="stats-bar"><div class="container stats-inner">
 <div class="stat-item"><span class="stat-num" id="statRequests">0</span><span class="stat-lbl">求助</span></div>
