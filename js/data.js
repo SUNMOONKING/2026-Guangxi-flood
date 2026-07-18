@@ -104,6 +104,23 @@ const DataStore = {
     }
   },
 
+  /** 更新（修改） */
+  async update(id, updates) {
+    try {
+      await SB.update('items', 'id', id, updates);
+      const item = this.items.find(i => i.id === id);
+      if (item) {
+        if (updates.category !== undefined) item.category = updates.category;
+        if (updates.supplies !== undefined) item.supplies = updates.supplies;
+        if (updates.quantity !== undefined) item.quantity = updates.quantity;
+        if (updates.urgency !== undefined) item.urgency = updates.urgency;
+        if (updates.situation !== undefined) item.situation = updates.situation;
+        if (updates.note !== undefined) item.note = updates.note;
+      }
+      return true;
+    } catch(e) { throw e; }
+  },
+
   /** 删除 */
   async delete(id) {
     try {
