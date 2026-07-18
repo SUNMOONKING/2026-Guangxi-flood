@@ -2,8 +2,9 @@
  * Supabase 客户端 - 使用 REST API 直接调用
  */
 const SB = {
+  // 使用正确的 anon key（非 publishable key）
   url: 'https://sgkquotyoykbceztlveg.supabase.co',
-  key: 'sb_publishable_rLYrQPNaC542NtQJdGc1Jg_lKOu47b6',
+  key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNna3F1b3R5b3lrYmNlenRsdmVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQzMjU2NDAsImV4cCI6MjA5OTkwMTY0MH0.g-zVc_8ewKvpaMEd9wGRcd--538BpADe8zxqVXhH5zg',
 
   headers() {
     return {
@@ -40,7 +41,10 @@ const SB = {
       headers: this.headers(),
       body: JSON.stringify(data)
     });
-    if (!res.ok) throw new Error(`插入失败: ${res.status}`);
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`插入失败: ${res.status} - ${errText}`);
+    }
     return res.json();
   },
 
