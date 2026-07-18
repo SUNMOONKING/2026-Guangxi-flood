@@ -1,4 +1,4 @@
-**
+/**
  * 主应用 - Supabase 云存储 + 身份系统
  */
 const app = {
