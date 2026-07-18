@@ -1,4 +1,4 @@
-/**
+**
  * 主应用 - Supabase 云存储 + 身份系统
  */
 const app = {
@@ -346,8 +346,10 @@ const app = {
     try {
       const result = await IdentityStore.register(name, phone, idCard);
       this.currentIdentity = result;
-      this._toast(`✅ 注册成功！您的个人ID：${result.personalId}，请牢记！可在「我的中心」查看`);
-      this.showLoggedIn();
+      // 弹窗提醒截图保存
+      alert(`✅ 注册成功！\n\n您的个人ID：${result.personalId}\n姓名：${result.realName}\n手机：${result.phone}\n\n请截图保存此信息！\n后续可通过「📋 我的」→ 输入个人ID管理您的发布。`);
+      // 自动返回主界面
+      this.closeMyCenter();
     } catch(e) {
       document.getElementById('myCenterError').textContent = e.message;
       document.getElementById('myCenterError').style.display = 'block';
@@ -407,7 +409,7 @@ const app = {
     } else {
       let html = '';
       posts.forEach(p => {
-        html += `<div class="my-post-card"><p><strong>${p.serial} ${p.type === 'request' ? '🆘 求助' : '🎁 捐赠'}</strong> · ${p.supplies}</p><p>📍 ${p.location} · 👤 ${p.name} · 📞 ${p.phone}</p><p style="color:var(--text-light);font-size:.8rem;">${p.category || ''} ${p.quantity || ''} · ${p.urgency || '一般'} · 匹配${p.matchCount}条</p><button class="my-post-delete" onclick="app.deleteMyPost('${p.id}')">🗑 删除</button></div>`;
+        html += `<div class="my-post-card"><p><strong>${p.serial} ${p.type === 'request' ? '🆘 求助' : '🎁 捐赠'}</strong> · ${p.supplies}</p><p>📍 ${p.location} · 👤 ${p.name} · 📞 ${p.phone}</p><p style="color:var(--text-light);font-size:.8rem;">${p.category || ''} ${p.quantity || ''} · ${p.urgency || '一般'} · 匹配${p.matchCount}条</p><div class="my-post-actions"><button class="my-post-delete" onclick="app.deleteMyPost('${p.id}')">🗑 删除</button><button class="my-post-delete" style="border-color:var(--warm-primary);color:var(--warm-primary);" onclick="app.openEditPost('${p.id}')">✏️ 修改</button></div></div>`;
       });
       list.innerHTML = html;
     }
@@ -424,6 +426,53 @@ const app = {
       this.populateRegion();
     } catch(e) {
       this._toast('删除失败');
+    }
+  },
+
+  // ====== 编辑发布 ======
+  _editingPostId: null,
+
+  openEditPost(id) {
+    const item = DataStore.getAll().find(i => i.id === id);
+    if (!item) return;
+    this._editingPostId = id;
+    document.getElementById('editCategory').value = item.category || '其他';
+    document.getElementById('editSupplies').value = item.supplies || '';
+    document.getElementById('editQuantity').value = item.quantity || '';
+    document.getElementById('editUrgency').value = item.urgency || '一般';
+    document.getElementById('editSituation').value = item.situation || '';
+    document.getElementById('editNote').value = item.note || '';
+    document.getElementById('editModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  },
+
+  closeEdit(e) {
+    if (e && e.target !== document.getElementById('editModal')) return;
+    document.getElementById('editModal').classList.remove('show');
+    document.body.style.overflow = '';
+  },
+
+  async saveEdit() {
+    const id = this._editingPostId;
+    if (!id) return;
+    const updates = {
+      category: document.getElementById('editCategory').value,
+      supplies: document.getElementById('editSupplies').value.trim(),
+      quantity: document.getElementById('editQuantity').value.trim(),
+      urgency: document.getElementById('editUrgency').value,
+      situation: document.getElementById('editSituation').value.trim(),
+      note: document.getElementById('editNote').value.trim()
+    };
+    if (!updates.supplies) { this._toast('物资名称不能为空'); return; }
+    try {
+      await DataStore.update(id, updates);
+      this._toast('✅ 修改成功');
+      this.closeEdit();
+      this.render();
+      this.updateStats();
+      if (this.currentIdentity) this.showLoggedIn();
+    } catch(e) {
+      this._toast('修改失败，请重试');
     }
   },
 
