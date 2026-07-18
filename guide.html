@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用指南 · 守望相助 · 洪灾供需对接平台</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #fdf6f0;
+            color: #2c3e50;
+            line-height: 1.8;
+            padding: 0;
+        }
+        .page {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 0 30px rgba(0,0,0,0.06);
+        }
+
+        /* ===== Cover ===== */
+        .cover {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            padding: 60px 40px 50px;
+            text-align: center;
+        }
+        .cover-icon { font-size: 4rem; margin-bottom: 12px; }
+        .cover h1 { font-size: 2rem; letter-spacing: 4px; font-weight: 800; margin-bottom: 8px; }
+        .cover p { font-size: 1rem; opacity: 0.9; line-height: 1.8; }
+        .cover .url-box {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ===== Section ===== */
+        .section { padding: 36px 40px; border-bottom: 1px solid #f0e6dc; }
+        .section:last-child { border-bottom: none; }
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #e74c3c;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px; height: 28px;
+            background: #e74c3c;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .section-sub { font-size: 0.95rem; color: #7f8c8d; margin-bottom: 12px; }
+
+        /* ===== Content ===== */
+        p { font-size: 0.92rem; margin-bottom: 10px; color: #3d2c1e; }
+        .highlight { background: #fde8e8; padding: 14px 18px; border-radius: 10px; margin: 12px 0; border-left: 4px solid #e74c3c; }
+        .highlight p { margin-bottom: 4px; font-size: 0.9rem; }
+
+        /* ===== Step ===== */
+        .step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+        .step-num {
+            min-width: 32px; height: 32px;
+            background: #e74c3c; color: #fff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85rem; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .step-content { flex: 1; }
+        .step-content h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; color: #2c3e50; }
+        .step-content p { font-size: 0.88rem; color: #5d4a3a; margin-bottom: 2px; }
+
+        /* ===== Badge ===== */
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 700; }
+        .badge-red { background: #fde8e8; color: #e74c3c; }
+        .badge-green { background: #e8f8f0; color: #27ae60; }
+        .badge-yellow { background: #fff8e0; color: #f39c12; }
+        .badge-blue { background: #e8f0fe; color: #3498db; }
+
+        /* ===== Feature Grid ===== */
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+        .feature-card {
+            background: #f8f6f4;
+            border-radius: 10px;
+            padding: 14px;
+            border: 1px solid #f0e6dc;
+        }
+        .feature-card h5 { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; }
+        .feature-card p { font-size: 0.82rem; color: #7f8c8d; margin-bottom: 0; }
+
+        /* ===== Tip ===== */
+        .tip {
+            background: #fff8e0;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin: 12px 0;
+            border-left: 4px solid #f39c12;
+        }
+        .tip p { font-size: 0.88rem; margin-bottom: 2px; }
+
+        /* ===== Disclaimer ===== */
+        .disclaimer {
+            background: #fafafa;
+            padding: 20px 24px;
+            border-radius: 10px;
+            border: 1px solid #e8eaed;
+            margin-top: 16px;
+        }
+        .disclaimer p { font-size: 0.78rem; color: #7f8c8d; line-height: 1.7; margin-bottom: 3px; }
+        .disclaimer strong { color: #2c3e50; }
+
+        /* ===== Footer ===== */
+        .guide-footer {
+            background: #2c3e50;
+            color: rgba(255,255,255,0.7);
+            text-align: center;
+            padding: 20px;
+            font-size: 0.82rem;
+        }
+
+        @media (max-width: 500px) {
+            .section { padding: 24px 20px; }
+            .cover { padding: 40px 20px; }
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <!-- ====== 封面 ====== -->
+        <div class="cover">
+            <div class="cover-icon">🧡</div>
+            <h1>守望相助</h1>
+            <p>洪灾物资供需对接平台 · 使用说明书</p>
+            <div class="url-box">🌐 sunmoonking.github.io/2026-Guangxi-flood</div>
+        </div>
+
+        <!-- ====== 1. 平台简介 ====== -->
+        <div class="section">
+            <div class="section-title"><span class="num">1</span> 这个平台是做什么的？</div>
+            <p>这是一个<strong>物资信息共享平台</strong>，帮助受灾地区（广西）的求助者和全国各地的捐赠者之间建立直接联系。</p>
+            <p>求助者发布需要什么物资，捐赠者发布能提供什么物资，系统自动进行匹配，双方可以直接电话联系。</p>
+            <div class="highlight">
+                <p>🎯 <strong>核心逻辑</strong>：发布 → 匹配 → 联系</p>
+                <p>📍 <strong>求助方</strong>：仅限广西地区</p>
+                <p>🎁 <strong>捐赠方</strong>：全国均可</p>
+                <p>💰 <strong>费用</strong>：完全免费</p>
+            </div>
+        </div>
+
+        <!-- ====== 2. 快速开始 ====== -->
+        <div class="section">
+            <div class="section-title"><span class="num">2</span> 快速开始（3步上手）</div>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h4>打开网页</h4>
+                    <p>在手机或电脑浏览器中打开：<br><strong>https://sunmoonking.github.io/2026-Guangxi-flood/</strong></p>
+                    <p>不需要下载任何 App，打开即用。</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h4>选择你的身份</h4>
+                    <p>👉 如果你是受灾群众 → 点击 <span class="badge badge-red">📢 我需要帮助</span></p>
+                    <p>👉 如果你想捐赠物资 → 点击 <span class="badge badge-green">🎁 我能提供帮助</span></p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h4>填写并发布</h4>
+                    <p>填写物资名称、数量、地点、联系电话等信息，点击「发布」。</p>
+                    <p>发布后信息会展示在看板上，系统自动开始匹配。</p>
+                </div>
+            </div>
+
+            <div class="tip">
+                <p>💡 <strong>小提示</strong>：发布后可以用「我的发布」功能（输入手机号后4位）查看和管理自己发布的信息。</p>
+            </div>
+        </div>
+
+        <!-- ====== 3. 完整功能一览 ====== -->
+        <div class="section">
+            <div class="section-title"><span class="num">3</span> 所有功能介绍</div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h5>📢 发布求助</h5>
+                    <p>广西受灾群众发布所需物资，填写物资分类、名称、数量、紧急程度、现状说明、地点、联系方式</p>
+                </div>
+                <div class="feature-card">
+                    <h5>🎁 发布捐赠</h5>
+                    <p>全国各地爱心人士发布可提供的物资，信息格式同上</p>
+                </div>
+                <div class="feature-card">
+                    <h5>🎯 自动匹配</h5>
+                    <p>系统根据物资关键词、同义词、地区、紧急程度自动计算匹配，同地区优先</p>
+                </div>
+                <div class="feature-card">
+                    <h5>📞 一键拨号</h5>
+                    <p>点击卡片上的电话号码直接拨打电话，快速联系对方</p>
+                </div>
+                <div class="feature-card">
+                    <h5>🔍 搜索筛选</h5>
+                    <p>按编号、物资名称、地点、联系人搜索；按地区、类型、匹配状态筛选</p>
+                </div>
+                <div class="feature-card">
+                    <h5>📋 我的发布</h5>
+                    <p>输入手机号后4位查看和删除自己发布的信息</p>
+                </div>
+                <div class="feature-card">
+                    <h5>📥 导出Excel</h5>
+                    <p>一键导出所有数据为Excel表格，方便线下统计</p>
+                </div>
+                <div class="feature-card">
+                    <h5>📊 数据看板</h5>
+                    <p>广西县级需求热力地图、各类物资供需对比、发布趋势、智能建议</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== 4. 发布填写说明 ====== -->
+        <div class="section">
+            <div class="section-title"><span class="num">4</span> 发布信息填写指南</div>
+            <p>每项字段的意义和填写建议如下：</p>
+
+            <div style="margin-top:12px;">
+                <p><strong>您的称呼</strong><br>如实填写即可，如"黄先生"或"张大为"。信息所有人可见。</p>
+            </div>
+            <div style="margin-top:10px;">
+                <p><strong>物资分类</strong><br>选择最接近的类别：消毒类、食品类、救援类、住宿类、排水类、医疗类、生活类、其他</p>
+            </div>
+            <div style="margin-top:10px;">
+                <p><strong>物资名称</strong><br>请尽可能具体，如"84消毒液50箱"比"消毒用品"更容易匹配成功。</p>
+            </div>
+            <div style="margin-top:10px;">
+                <p><strong>数量</strong><br>填写大致数量，如"50箱"、"200只"、"若干"</p>
+            </div>
+            <div style="margin-top:10px;">
+                <p><strong>紧急程度</strong><br>• 特急 🔴 — 非常紧急，急需物资<br>• 紧急 🟡 — 比较急，希望尽快<br>• 一般 🟢 — 普通需求</p>
+            </div>
+            <div style="margin-top:10px;">
+                <p><strong>现状说明</strong><br>描述具体情况，帮助捐赠者了解真实需求。例如："村里水井被淹，200户人需要消毒用品"</p>
+            </div>
+            <div style="margin-top:10px;">
+                <p><strong>所在地区</strong><br>通过省→市→县/区三级下拉选择（求助方仅广西，捐赠方全国）。如有更具体的地址可补充填写。</p>
+            </div>
+            <div style="margin-top:10px;">
+                <p><strong>联系电话</strong><br>填写真实手机号，匹配成功后双方通过此号码联系。</p>
+            </div>
+        </div>
+
+        <!-- ====== 5. 匹配与联系 ====== -->
+        <div class="section">
+            <div class="section-title"><span class="num">5</span> 匹配与联系流程</div>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    <h4>系统自动匹配</h4>
+                    <p>发布后，系统立即进行全量匹配。匹配规则：物资关键词匹配 + 同义词扩展 + 同地区优先 + 紧急程度加权。</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    <h4>查看匹配结果</h4>
+                    <p>在信息卡片上会显示 <span class="badge badge-green">✅ 已匹配 X 条</span> 或 <span class="badge badge-yellow">⏳ 待匹配</span>。</p>
+                    <p>点击「🎯 查看匹配」按钮，可以看到匹配到的对方信息和联系方式。</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    <h4>自行联系</h4>
+                    <p>看到匹配结果后，直接拨打对方电话沟通物资对接事宜。</p>
+                    <p>手机端点击电话号码即可一键拨号。</p>
+                </div>
+            </div>
+
+            <div class="tip">
+                <p>⚠️ <strong>重要提醒</strong>：平台仅做信息匹配，不介入双方的物资交接过程。联系时请务必核实对方身份，谨防诈骗。</p>
+            </div>
+        </div>
+
+        <!-- ====== 6. 数据看板 ====== -->
+        <div class="section">
+            <div class="section-title"><span class="num">6</span> 数据看板解读</div>
+            <p>点击发布栏右侧的 <span class="badge badge-blue">📊 数据看板 ▾</span> 按钮，可以展开数据统计面板：</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h5>🗺️ 广西县级需求分布</h5>
+                    <p>散点图展示广西各县的求助需求集中度，圆点越大表示该县求助越多</p>
+                </div>
+                <div class="feature-card">
+                    <h5>📋 县级数据明细</h5>
+                    <p>表格列出各县的求助数、捐赠数、缺口数，按缺口从大到小排序</p>
+                </div>
+                <div class="feature-card">
+                    <h5>📊 各类物资供需对比</h5>
+                    <p>柱状图对比8类物资的求助与捐赠数量，一目了然</p>
+                </div>
+                <div class="feature-card">
+                    <h5>🥧 求助类别分布</h5>
+                    <p>饼图展示求助物资的类别占比</p>
+                </div>
+                <div class="feature-card">
+                    <h5>📈 近7日发布趋势</h5>
+                    <p>折线图展示最近7天每天发布的总信息数</p>
+                </div>
+                <div class="feature-card">
+                    <h5>💡 智能建议</h5>
+                    <p>系统根据当前数据自动生成物资提供建议（仅供参考）</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====== 7. 重要提醒 ====== -->
+        <div class="section">
+            <div class="section-title"><span class="num">7</span> 使用须知</div>
+
+            <div class="highlight">
+                <p>✅ <strong>求助方</strong>：仅限广西壮族自治区范围内的受灾群众</p>
+                <p>✅ <strong>捐赠方</strong>：全国各省市均可发布捐赠信息</p>
+                <p>✅ <strong>编号系统</strong>：每条信息有唯一编号（#001、#002...），方便查询和核对</p>
+                <p>✅ <strong>分页浏览</strong>：每页最多显示10条信息，超过会自动分页</p>
+                <p>✅ <strong>自动刷新</strong>：页面每60秒自动同步数据</p>
+            </div>
+
+            <div class="tip">
+                <p>📢 打开页面后，点击底部「📢 分享给需要的人」可以一键复制分享文案，转发到微信群或小红书</p>
+            </div>
+        </div>
+
+        <!-- ====== 8. 法律免责声明 ====== -->
+        <div class="section">
+            <div class="section-title"><span class="num">8</span> 法律免责声明</div>
+            <p style="font-size:0.88rem; color:#7f8c8d;">请在使用本平台前仔细阅读以下条款：</p>
+
+            <div class="disclaimer">
+                <p><strong>【法律免责声明】</strong></p>
+                <p>1. 本平台为公益信息共享平台，仅提供物资供需信息的发布、展示与匹配服务，不参与、不介入、不担保任何用户之间的交易、捐赠、运输或其他形式的物资流转行为。</p>
+                <p>2. 本平台所有信息均由用户自行发布，平台不对用户发布的信息的真实性、准确性、完整性、有效性作任何明示或暗示的保证。用户应自行判断信息真伪并承担因信息使用产生的全部风险与责任。</p>
+                <p>3. 用户之间因信息对接产生的任何纠纷、争议、损失或法律责任，均由用户自行协商解决，本平台不承担任何责任。</p>
+                <p>4. 请用户在联系对接时务必核实对方身份与信息真实性，谨防诈骗。如发现虚假信息或违法行为，请及时向公安机关报案。</p>
+                <p>5. 使用本平台即视为您已阅读、理解并同意本免责声明的全部内容。如您不同意，请停止使用本平台。</p>
+            </div>
+        </div>
+
+        <!-- ====== 页脚 ====== -->
+        <div class="guide-footer">
+            <p>🧡 守望相助 · 共渡难关</p>
+            <p style="margin-top:4px; font-size:0.75rem;">本平台为公益项目 · 所有信息由用户自行发布</p>
+        </div>
+
+    </div>
+</body>
+</html>
