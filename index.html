@@ -1,116 +1,85 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>守望相助 · 洪灾供需对接平台</title>
-    <link rel="stylesheet" href="css/main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>守望相助 · 灾害供需对接平台</title>
+<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <!-- 顶部导航 -->
-    <header class="header">
-        <div class="container header-inner">
-            <div class="logo">
-                <span class="logo-icon">🧡</span>
-                <div>
-                    <h1>守望相助</h1>
-                    <p class="logo-sub">洪灾供需对接 · 以广西为主覆盖全国</p>
-                </div>
-            </div>
-            <div class="header-right">
-                <div class="last-update" id="lastUpdate">⏳ 加载中...</div>
-                <button class="btn btn-refresh" onclick="app.refresh()">🔄 刷新</button>
-            </div>
-        </div>
-        <div class="warm-bar">
-            <div class="container">
-                <span class="warm-text" id="warmText">🧡 每一份帮助都弥足珍贵，感谢每一个善良的你</span>
-            </div>
-        </div>
-    </header>
-    <div class="stats-bar">
-        <div class="container stats-inner">
-            <div class="stat-item"><span class="stat-num" id="statRequests">0</span><span class="stat-lbl">求助</span></div>
-            <div class="stat-item"><span class="stat-num" id="statOffers">0</span><span class="stat-lbl">捐赠</span></div>
-            <div class="stat-item"><span class="stat-num" id="statMatched">0</span><span class="stat-lbl">已匹配</span></div>
-            <div class="stat-item"><span class="stat-num" id="statPending">0</span><span class="stat-lbl">待匹配</span></div>
-            <div class="stat-item"><span class="stat-num" id="statTotalItems">0</span><span class="stat-lbl">总信息</span></div>
-        </div>
-    </div>
-    <section class="action-bar">
-        <div class="container">
-            <div class="action-row">
-                <div class="publish-btns">
-                    <button class="btn-pub btn-pub-request" onclick="app.openPublish('request')">📢 我需要帮助</button>
-                    <button class="btn-pub btn-pub-offer" onclick="app.openPublish('offer')">🎁 我能提供帮助</button>
-                    <button class="btn-pub btn-pub-dashboard" onclick="app.toggleDashboard()">📊 数据看板 <span id="dashArrow">▾</span></button>
-                </div>
-                <div class="action-tools">
-                    <input type="text" id="searchInput" placeholder="🔍 搜索编号/物资/地点..." oninput="app.filter()">
-                    <select id="filterRegion" onchange="app.filter()"><option value="">📍 全部地区</option></select>
-                    <select id="filterType" onchange="app.filter()"><option value="all">📋 全部</option><option value="request">🆘 求助</option><option value="offer">🎁 捐赠</option></select>
-                    <select id="filterMatch" onchange="app.filter()"><option value="all">🔗 匹配</option><option value="matched">✅ 已匹配</option><option value="unmatched">⚠️ 未匹配</option></select>
-                    <button class="btn btn-export" onclick="app.exportExcel()">📥 导出</button>
-                    <button class="btn btn-my" onclick="app.openMyCenter()">📋 我的</button>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="dashboard-panel" id="dashboardPanel">
-        <div class="container">
-            <div class="dash-grid">
-                <div class="dash-card"><h4>🗺️ 广西县级需求分布</h4><div id="mapChart" style="width:100%;height:260px;"></div></div>
-                <div class="dash-card"><h4>📋 县级数据</h4><div class="dash-table-scroll"><table id="countyTable"><thead><tr><th>县/区</th><th>求助</th><th>捐赠</th><th>缺口</th></tr></thead><tbody id="countyTableBody"></tbody></table></div></div>
-                <div class="dash-card"><h4>📊 各类物资供需对比</h4><div id="barChart" style="width:100%;height:200px;"></div></div>
-                <div class="dash-card"><h4>🥧 求助类别分布</h4><div id="pieChart" style="width:100%;height:200px;"></div></div>
-                <div class="dash-card"><h4>📈 近7日趋势</h4><div id="lineChart" style="width:100%;height:200px;"></div></div>
-                <div class="dash-card dash-suggestion-card"><h4>💡 智能建议</h4><div id="suggestionBox"><p style="color:var(--text-muted);font-size:.85rem;">加载中...</p></div><p class="dash-note">* 基于当前数据，仅供参考</p></div>
-            </div>
-        </div>
-    </section>
-    <section class="tab-section">
-        <div class="container">
-            <div class="tab-row">
-                <button class="tab-btn active" data-tab="all" onclick="app.switchTab('all')">📋 全部</button>
-                <button class="tab-btn" data-tab="request" onclick="app.switchTab('request')">🆘 求助</button>
-                <button class="tab-btn" data-tab="offer" onclick="app.switchTab('offer')">🎁 捐赠</button>
-                <span class="tab-count" id="tabCount">共 0 条</span>
-            </div>
-        </div>
-    </section>
-    <main class="main-content">
-        <div class="container">
-            <div class="card-grid" id="cardGrid">
-                <div class="empty-state"><div class="empty-icon">🤝</div><h3>暂无信息</h3><p>点击上方按钮发布第一条信息</p></div>
-            </div>
-            <div class="pagination" id="pagination">
-                <button class="page-btn" id="prevPage" onclick="app.goPage('prev')">‹ 上一页</button>
-                <div class="page-numbers" id="pageNumbers"></div>
-                <button class="page-btn" id="nextPage" onclick="app.goPage('next')">下一页 ›</button>
-            </div>
-        </div>
-    </main>
-    <section class="share-section">
-        <div class="container share-inner">
-            <p class="share-title">📢 分享给需要的人</p>
-            <div class="share-box">
-                <textarea id="shareText" rows="2" readonly onclick="this.select()"></textarea>
-                <button class="btn btn-copy" onclick="app.copyShare()">📋 复制</button>
-            </div>
-            <p class="share-note">复制后发到微信群 / 小红书</p>
-        </div>
-    </section>
-    <div class="modal-overlay" id="publishModal" onclick="app.closePublish(event)"><div class="modal-content"><div class="modal-header"><h3 id="publishTitle">📢 发布求助信息</h3><button class="modal-close" onclick="app.closePublish()">&times;</button></div><div class="modal-body"><div class="form-group"><label>您的称呼</label><input type="text" id="formName" placeholder="如：黄先生 / 张大为" maxlength="20"></div><div class="form-row"><div class="form-group"><label>物资分类 *</label><select id="formCategory"><option value="消毒类">消毒类</option><option value="食品类">食品类</option><option value="救援类">救援类</option><option value="住宿类">住宿类</option><option value="排水类">排水类</option><option value="医疗类">医疗类</option><option value="生活类">生活类</option><option value="其他">其他</option></select></div><div class="form-group"><label>物资名称 *</label><input type="text" id="formSupplies" placeholder="如：漂白粉、84消毒液"></div></div><div class="form-row"><div class="form-group"><label>数量</label><input type="text" id="formQuantity" placeholder="如：50箱"></div><div class="form-group"><label>紧急程度 *</label><select id="formUrgency"><option value="一般">一般</option><option value="紧急">紧急</option><option value="特急">特急</option></select></div></div><div class="form-group"><label>现状说明</label><textarea id="formSituation" rows="2" placeholder="描述具体情况..."></textarea></div><div class="form-group"><label>所在地区 *</label><div class="region-row"><select id="formProvince" onchange="app.onProvinceChange()"><option value="">请选省</option></select><select id="formCity" onchange="app.onCityChange()"><option value="">请选市</option></select><select id="formCounty"><option value="">请选县/区</option></select></div></div><div class="form-group"><label>详细地址（选填）</label><input type="text" id="formAddress" placeholder="如：镇龙乡XX村XX组"></div><div class="form-row"><div class="form-group"><label>联系电话 *</label><input type="tel" id="formPhone" placeholder="如：13812345678"></div></div><div class="form-group"><label>备注</label><textarea id="formNote" rows="1" placeholder="其他补充..."></textarea></div><div class="form-tip">⚠️ 信息所有人可见，联系时请核实身份</div><div class="form-actions"><button class="btn btn-cancel" onclick="app.closePublish()">取消</button><button class="btn btn-submit" onclick="app.submitPublish()">✅ 发布</button></div></div></div></div>
-    <div class="modal-overlay" id="matchModal" onclick="app.closeModal(event)"><div class="modal-content"><div class="modal-header"><h3>🎯 匹配详情</h3><button class="modal-close" onclick="app.closeModal()">&times;</button></div><div class="modal-body" id="matchModalBody"></div></div></div>
-    <div class="modal-overlay" id="myCenterModal" onclick="app.closeMyCenter(event)"><div class="modal-content"><div class="modal-header"><h3>📋 我的中心</h3><button class="modal-close" onclick="app.closeMyCenter()">&times;</button></div><div class="modal-body" id="myCenterBody"><div id="myCenterLogin"><p style="margin-bottom:8px;color:var(--text-light);font-size:.85rem;">首次使用？请先注册身份。已注册请输入个人ID。</p><div class="form-group"><label>个人ID（手机尾号4位+身份证尾号4位）</label><input type="text" id="myCenterPid" placeholder="如：67891234" maxlength="8"></div><div class="form-actions" style="margin-top:4px;"><button class="btn btn-cancel" onclick="app.showRegisterForm()">📝 注册身份</button><button class="btn btn-submit" onclick="app.loginMyCenter()">🔍 进入</button><button class="btn btn-cancel" onclick="app.showRecoverForm()">🔐 找回ID</button></div><div id="myCenterError" style="color:var(--primary);font-size:.8rem;margin-top:8px;display:none;"></div></div><div id="myCenterRegister" style="display:none;"><p style="margin-bottom:10px;color:var(--text-light);font-size:.85rem;">请填写以下信息注册身份，信息仅用于身份验证，不会公开显示。</p><div class="form-group"><label>真实姓名</label><input type="text" id="regName" placeholder="请输入真实姓名" maxlength="20"></div><div class="form-group"><label>手机号码</label><input type="tel" id="regPhone" placeholder="请输入11位手机号" maxlength="11"></div><div class="form-group"><label>身份证后6位</label><input type="text" id="regIdCard" placeholder="请输入身份证后6位" maxlength="6" inputmode="numeric"></div><div class="form-tip" style="font-size:.78rem;">注册后系统将生成您的个人ID，请牢记！</div><div class="form-actions"><button class="btn btn-cancel" onclick="app.backToMyCenterLogin()">返回</button><button class="btn btn-submit" onclick="app.registerIdentity()">✅ 注册</button></div></div><div id="myCenterRecover" style="display:none;"><p style="margin-bottom:10px;color:var(--text-light);font-size:.85rem;">填写注册时使用的信息找回个人ID。</p><div class="form-group"><label>真实姓名</label><input type="text" id="recName" placeholder="注册时填写的真实姓名" maxlength="20"></div><div class="form-group"><label>手机号码</label><input type="tel" id="recPhone" placeholder="注册时填写的手机号" maxlength="11"></div><div class="form-group"><label>身份证后6位</label><input type="text" id="recIdCard" placeholder="注册时填写的身份证后6位" maxlength="6"></div><div class="form-actions"><button class="btn btn-cancel" onclick="app.backToMyCenterLogin()">返回</button><button class="btn btn-submit" onclick="app.recoverIdentity()">🔐 找回</button></div></div><div id="myCenterLoggedIn" style="display:none;"><div class="my-profile" style="background:var(--bg);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;"><p><strong>👤 我的信息</strong></p><p id="myProfileName" style="font-size:.9rem;margin-top:4px;"></p><p id="myProfilePhone" style="font-size:.9rem;"></p><p id="myProfilePid" style="font-size:.9rem;color:var(--primary);font-weight:700;"></p></div><p style="font-weight:600;margin-bottom:8px;">📋 我的发布</p><div id="myPostsList"></div></div></div></div></div>
-    <footer class="footer"><div class="container"><p>🤝 守望相助 · 共渡难关</p><p class="footer-note">信息由用户自行发布，平台仅做信息聚合与展示</p><div class="legal-disclaimer"><p><strong>【法律免责声明】</strong></p><p>1. 本平台为公益信息共享平台，仅提供物资供需信息的发布、展示与匹配服务。</p><p>2. 所有信息由用户自行发布，平台不对信息的真实性、准确性作任何保证。</p><p>3. 用户之间因信息对接产生的纠纷由用户自行协商解决。</p><p>4. 使用本平台即视为您已阅读、理解并同意本免责声明的全部内容。</p></div></div></footer>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="js/guangxi-data.js"></script>
-    <script src="js/supabaseClient.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/match.js"></script>
-    <script src="js/stats.js"></script>
-    <script src="js/app.js"></script>
+<header class="header">
+<div class="container header-inner">
+<div class="logo"><span class="logo-icon">🧡</span><div><h1>守望相助</h1><p class="logo-sub">灾害供需对接 · 覆盖全国所有受灾地区</p></div></div>
+<div class="header-right"><div class="last-update" id="lastUpdate">⏳ 加载中...</div><button class="btn btn-refresh" onclick="app.refresh()">🔄 刷新</button></div>
+</div>
+<div class="warm-bar"><div class="container"><span class="warm-text" id="warmText">🧡 每一份帮助都弥足珍贵</span></div></div>
+</header>
+<div class="stats-bar"><div class="container stats-inner">
+<div class="stat-item"><span class="stat-num" id="statRequests">0</span><span class="stat-lbl">求助</span></div>
+<div class="stat-item"><span class="stat-num" id="statOffers">0</span><span class="stat-lbl">捐赠</span></div>
+<div class="stat-item"><span class="stat-num" id="statMatched">0</span><span class="stat-lbl">已匹配</span></div>
+<div class="stat-item"><span class="stat-num" id="statPending">0</span><span class="stat-lbl">待匹配</span></div>
+<div class="stat-item"><span class="stat-num" id="statTotalItems">0</span><span class="stat-lbl">总信息</span></div>
+</div></div>
+<section class="action-bar"><div class="container"><div class="action-row"><div class="publish-btns">
+<button class="btn-pub btn-pub-request" onclick="app.openPublish('request')">📢 我需要帮助</button>
+<button class="btn-pub btn-pub-offer" onclick="app.openPublish('offer')">🎁 我能提供帮助</button>
+<button class="btn-pub btn-pub-dashboard" onclick="app.toggleDashboard()">📊 数据看板 <span id="dashArrow">▾</span></button>
+</div><div class="action-tools">
+<input type="text" id="searchInput" placeholder="🔍 搜索编号/物资/地点..." oninput="app.filter()">
+<select id="filterRegion" onchange="app.filter()"><option value="">📍 全部地区</option></select>
+<select id="filterType" onchange="app.filter()"><option value="all">📋 全部</option><option value="request">🆘 求助</option><option value="offer">🎁 捐赠</option></select>
+<select id="filterMatch" onchange="app.filter()"><option value="all">🔗 匹配</option><option value="matched">✅ 已匹配</option><option value="unmatched">⚠️ 未匹配</option></select>
+<button class="btn btn-export" onclick="app.exportExcel()">📥 导出</button>
+<button class="btn btn-my" onclick="app.openMyCenter()">📋 我的</button>
+</div></div></div></section>
+<section class="dashboard-panel" id="dashboardPanel"><div class="container"><div class="dash-grid">
+<div class="dash-card"><h4>🆘 需求板</h4><div class="dash-table-scroll"><table id="requestBoard"><thead><tr><th>县/区</th><th>求助</th><th>捐赠</th><th>缺口</th></tr></thead><tbody id="requestBoardBody"></tbody></table></div></div>
+<div class="dash-card"><h4>🎁 捐赠板</h4><div class="dash-table-scroll"><table id="offerBoard"><thead><tr><th>县/区</th><th>捐赠</th><th>求助</th><th>余/紧</th></tr></thead><tbody id="offerBoardBody"></tbody></table></div></div>
+<div class="dash-card"><h4>📊 各类物资供需对比</h4><div id="barChart" style="width:100%;height:200px;"></div></div>
+<div class="dash-card"><h4>🥧 求助类别分布</h4><div id="pieChart" style="width:100%;height:200px;"></div></div>
+<div class="dash-card"><h4>📈 近7日趋势</h4><div id="lineChart" style="width:100%;height:200px;"></div></div>
+<div class="dash-card dash-suggestion-card"><h4>💡 智能建议</h4><div id="suggestionBox"><p style="color:var(--text-muted);font-size:.85rem;">加载中...</p></div><p class="dash-note">* 基于当前数据，仅供参考</p></div>
+</div></div></section>
+<section class="tab-section"><div class="container"><div class="tab-row">
+<button class="tab-btn active" data-tab="all" onclick="app.switchTab('all')">📋 全部</button>
+<button class="tab-btn" data-tab="request" onclick="app.switchTab('request')">🆘 求助</button>
+<button class="tab-btn" data-tab="offer" onclick="app.switchTab('offer')">🎁 捐赠</button>
+<span class="tab-count" id="tabCount">共 0 条</span>
+</div></div></section>
+<main class="main-content"><div class="container">
+<div class="card-grid" id="cardGrid"><div class="empty-state"><div class="empty-icon">🤝</div><h3>暂无信息</h3><p>点击上方按钮发布第一条信息</p></div></div>
+<div class="pagination" id="pagination"><button class="page-btn" id="prevPage" onclick="app.goPage('prev')">‹ 上一页</button><div class="page-numbers" id="pageNumbers"></div><button class="page-btn" id="nextPage" onclick="app.goPage('next')">下一页 ›</button></div>
+</div></main>
+<section class="share-section"><div class="container share-inner">
+<p class="share-title">📢 分享给需要的人</p>
+<div class="share-box"><textarea id="shareText" rows="2" readonly onclick="this.select()"></textarea><button class="btn btn-copy" onclick="app.copyShare()">📋 复制</button></div>
+<p class="share-note">复制后发到微信群 / 小红书</p>
+</div></section>
+<div class="modal-overlay" id="publishModal" onclick="app.closePublish(event)"><div class="modal-content"><div class="modal-header"><h3 id="publishTitle">📢 发布求助信息</h3><button class="modal-close" onclick="app.closePublish()">&times;</button></div><div class="modal-body"><div class="form-group"><label>您的称呼</label><input type="text" id="formName" maxlength="20"></div>
+<div class="form-row"><div class="form-group"><label>物资分类 *</label><select id="formCategory"><option value="消毒类">消毒类</option><option value="食品类">食品类</option><option value="救援类">救援类</option><option value="住宿类">住宿类</option><option value="排水类">排水类</option><option value="医疗类">医疗类</option><option value="生活类">生活类</option><option value="其他">其他</option></select></div><div class="form-group"><label>物资名称 *</label><input type="text" id="formSupplies"></div></div>
+<div class="form-row"><div class="form-group"><label>数量</label><input type="text" id="formQuantity"></div><div class="form-group"><label>紧急程度 *</label><select id="formUrgency"><option value="一般">一般</option><option value="紧急">紧急</option><option value="特急">特急</option></select></div></div>
+<div class="form-group"><label>现状说明</label><textarea id="formSituation" rows="2"></textarea></div>
+<div class="form-group"><label>所在地区 *</label><div class="region-row"><select id="formProvince" onchange="app.onProvinceChange()"><option value="">请选省</option></select><select id="formCity" onchange="app.onCityChange()"><option value="">请选市</option></select><select id="formCounty"><option value="">请选县/区</option></select></div></div>
+<div class="form-group"><label>详细地址（选填）</label><input type="text" id="formAddress"></div>
+<div class="form-row"><div class="form-group"><label>联系电话 *</label><input type="tel" id="formPhone"></div></div>
+<div class="form-group"><label>备注</label><textarea id="formNote" rows="1"></textarea></div>
+<div class="form-tip">⚠️ 信息所有人可见，联系时请核实身份</div>
+<div class="form-actions"><button class="btn btn-cancel" onclick="app.closePublish()">取消</button><button class="btn btn-submit" onclick="app.submitPublish()">✅ 发布</button></div></div></div></div>
+<div class="modal-overlay" id="matchModal" onclick="app.closeModal(event)"><div class="modal-content"><div class="modal-header"><h3>🎯 匹配详情</h3><button class="modal-close" onclick="app.closeModal()">&times;</button></div><div class="modal-body" id="matchModalBody"></div></div></div>
+<div class="modal-overlay" id="myCenterModal" onclick="app.closeMyCenter(event)"><div class="modal-content"><div class="modal-header"><h3>📋 我的中心</h3><button class="modal-close" onclick="app.closeMyCenter()">&times;</button></div><div class="modal-body" id="myCenterBody">
+<div id="myCenterLogin"><p style="margin-bottom:8px;color:var(--text-light);font-size:.85rem;">首次使用？请先注册身份。已注册请输入个人ID。</p><div class="form-group"><label>个人ID（手机尾号4位+身份证尾号4位）</label><input type="text" id="myCenterPid" maxlength="8"></div><div class="form-actions" style="margin-top:4px;"><button class="btn btn-cancel" onclick="app.showRegisterForm()">📝 注册身份</button><button class="btn btn-submit" onclick="app.loginMyCenter()">🔍 进入</button><button class="btn btn-cancel" onclick="app.showRecoverForm()">🔐 找回ID</button></div><div id="myCenterError" style="color:var(--primary);font-size:.8rem;margin-top:8px;display:none;"></div></div>
+<div id="myCenterRegister" style="display:none;"><p style="margin-bottom:10px;color:var(--text-light);font-size:.85rem;">请填写以下信息注册身份，信息仅用于身份验证，不会公开显示。</p><div class="form-group"><label>真实姓名</label><input type="text" id="regName" maxlength="20"></div><div class="form-group"><label>手机号码</label><input type="tel" id="regPhone" maxlength="11"></div><div class="form-group"><label>身份证后6位</label><input type="text" id="regIdCard" maxlength="6"></div><div class="form-tip" style="font-size:.78rem;">注册后系统将生成您的个人ID，请牢记！</div><div class="form-actions"><button class="btn btn-cancel" onclick="app.backToMyCenterLogin()">返回</button><button class="btn btn-submit" onclick="app.registerIdentity()">✅ 注册</button></div></div>
+<div id="myCenterRecover" style="display:none;"><p style="margin-bottom:10px;color:var(--text-light);font-size:.85rem;">填写注册时使用的信息找回个人ID。</p><div class="form-group"><label>真实姓名</label><input type="text" id="recName" maxlength="20"></div><div class="form-group"><label>手机号码</label><input type="tel" id="recPhone" maxlength="11"></div><div class="form-group"><label>身份证后6位</label><input type="text" id="recIdCard" maxlength="6"></div><div class="form-actions"><button class="btn btn-cancel" onclick="app.backToMyCenterLogin()">返回</button><button class="btn btn-submit" onclick="app.recoverIdentity()">🔐 找回</button></div></div>
+<div id="myCenterLoggedIn" style="display:none;"><div class="my-profile" style="background:var(--bg);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;"><p><strong>👤 我的信息</strong></p><p id="myProfileName" style="font-size:.9rem;margin-top:4px;"></p><p id="myProfilePhone" style="font-size:.9rem;"></p><p id="myProfilePid" style="font-size:.9rem;color:var(--primary);font-weight:700;"></p></div><p style="font-weight:600;margin-bottom:8px;">📋 我的发布</p><div id="myPostsList"></div></div>
+</div></div></div>
+<footer class="footer"><div class="container"><p>🤝 守望相助 · 共渡难关</p><p class="footer-note">信息由用户自行发布，平台仅做信息聚合与展示</p><div class="legal-disclaimer"><p><strong>【法律免责声明】</strong></p><p>1. 本平台为公益信息共享平台，仅提供物资供需信息的发布、展示与匹配服务。</p><p>2. 所有信息由用户自行发布，平台不对信息的真实性、准确性作任何保证。</p><p>3. 用户之间因信息对接产生的纠纷由用户自行协商解决。</p><p>4. 使用本平台即视为您已阅读、理解并同意本免责声明的全部内容。</p></div></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="js/guangxi-data.js"></script>
+<script src="js/data.js"></script>
+<script src="js/match.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
