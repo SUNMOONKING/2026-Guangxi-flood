@@ -433,6 +433,8 @@ const app = {
   _editingPostId: null,
 
   openEditPost(id) {
+    // 先关闭我的中心，再打开编辑弹窗
+    this.closeMyCenter();
     const item = DataStore.getAll().find(i => i.id === id);
     if (!item) return;
     this._editingPostId = id;
